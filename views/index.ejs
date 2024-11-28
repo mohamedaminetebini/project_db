@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Employee</title>
+</head>
+<body>
+    <h1>Add Employee</h1>
+    <form action="/add-employee" method="POST">
+        <label for="nom">Nom:</label>
+        <input type="text" id="nom" name="nom" required><br><br>
+
+        <label for="prenom">Prenom:</label>
+        <input type="text" id="prenom" name="prenom" required><br><br>
+
+        <label for="anciennete">Anciennete:</label>
+        <input type="number" id="anciennete" name="anciennete" ><br><br>
+
+        <label for="numero">Numero:</label>
+        <input type="number" id="numero" name="numero"><br><br>
+
+        <label for="rue">Rue:</label>
+        <input type="text" id="rue" name="rue"><br><br>
+
+        <label for="codepostal">Code Postal:</label>
+        <input type="number" id="codepostal" name="codepostal"><br><br>
+
+        <label for="ville">Ville:</label>
+        <input type="text" id="ville" name="ville" ><br><br>
+
+        <label for="tel">Tel:</label>
+        <input type="number" id="tel" name="tel"><br><br>
+
+        <label for="prime">Prime:</label>
+        <input type="number" id="prime" name="prime"><br><br>
+
+        <button type="submit">Add Employee</button>
+    </form>
+
+    <h1>Delete Employee</h1>
+    <form action="/delete-employee" method="POST">
+        <label for="employeeId">Employee name:</label>
+        <input type="text" id="employeeId" name="employeeId" required><br><br>
+        <button type="submit">Delete Employee</button>
+    </form>
+    <h2>Employee List</h2>
+    <table border="1" id="employeeTable">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Anciennete</th>
+                <th>Numero</th>
+                <th>Rue</th>
+                <th>Code Postal</th>
+                <th>Ville</th>
+                <th>Tel</th>
+                <th>Prime</th>
+            </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+    </table>
+    <h1>Dynamic MapReduce</h1>
+    <form id="mapReduceForm">
+        <label for="groupByField">Group By Field:</label>
+        <input type="text" id="groupByField" name="groupByField" required><br><br>
+
+        <label for="aggregateField">Aggregate Field:</label>
+        <input type="text" id="aggregateField" name="aggregateField" required><br><br>
+
+        <button type="submit">Run MapReduce</button>
+    </form>
+
+    <h2>Results:</h2>
+    <pre id="results"></pre>
+    <script>
+     
+        async function fetchEmployees() {
+            try {
+                const response = await fetch("/get-employees");
+                const employees = await response.json();
+
+                const tableBody = document.querySelector("#employeeTable tbody");
+                tableBody.innerHTML = "";
+
+                employees.forEach(employee => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${employee.nom}</td>
+                        <td>${employee.prenom}</td>
+                        <td>${employee.anciennete}</td>
+                        <td>${employee.adresse.numero || "N/A"}</td>
+                        <td>${employee.adresse.rue || "N/A"}</td>
+                        <td>${employee.adresse.codepostal}</td>
+                        <td>${employee.adresse.ville}</td>
+                        <td>${employee.tel || "N/A"}</td>
+                        <td>${employee.prime || "N/A"}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching employees:", error);
+            }
+        }
+        window.onload = fetchEmployees;
+        document.getElementById("mapReduceForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const groupByField = document.getElementById("groupByField").value;
+            const aggregateField = document.getElementById("aggregateField").value;
+
+            const response = await fetch("/mapreduce", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    groupByField,
+                    aggregateField,
+                }),
+            });
+
+            const result = await response.json();
+            document.getElementById("results").textContent = JSON.stringify(result, null, 2);
+        });
+    </script>
+</body>
+</html>
