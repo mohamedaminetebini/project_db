@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+   
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Employee Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users">All Users</a>
+                    </li>
+                  
+                   
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Agg">Group Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/stats">User Stats</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    
+    <div class="container mt-5">
+        <h1 class="text-center">Employee Dashboard</h1>
+
+       
+        <section class="my-5">
+            <h3>Add Employee</h3>
+            <form action="/add-employee" method="POST" class="mb-4">
+                <div class="mb-3">
+                    <label for="nom" class="form-label">Nom</label>
+                    <input type="text" class="form-control" id="nom" name="nom" required>
+                </div>
+                <div class="mb-3">
+                    <label for="prenom" class="form-label">Prenom</label>
+                    <input type="text" class="form-control" id="prenom" name="prenom" required>
+                </div>
+                <div class="mb-3">
+                    <label for="anciennete" class="form-label">Anciennete</label>
+                    <input type="number" class="form-control" id="anciennete" name="anciennete">
+                </div>
+                <div class="mb-3">
+                    <label for="numero" class="form-label">Adresse - Numero</label>
+                    <input type="text" class="form-control" id="numero" name="numero">
+                </div>
+                <div class="mb-3">
+                    <label for="rue" class="form-label">Rue</label>
+                    <input type="text" class="form-control" id="rue" name="rue">
+                </div>
+                <div class="mb-3">
+                    <label for="codepostal" class="form-label">Code Postal</label>
+                    <input type="number" class="form-control" id="codepostal" name="codepostal">
+                </div>
+                <div class="mb-3">
+                    <label for="ville" class="form-label">Ville</label>
+                    <input type="text" class="form-control" id="ville" name="ville">
+                </div>
+                <div class="mb-3">
+                    <label for="tel" class="form-label">Tel</label>
+                    <input type="number" class="form-control" id="tel" name="tel">
+                </div>
+                <div class="mb-3">
+                    <label for="prime" class="form-label">Prime</label>
+                    <input type="number" class="form-control" id="prime" name="prime">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Employee</button>
+            </form>
+        </section>
+
+        <form action="/mapreduce" method="POST">
+            <div class="form-group">
+                <label for="groupByField mb-3">Group By</label>
+                <select name="groupByField" id="groupByField" class="form-control" required>
+                    <option value="anciennete">Tenure</option>
+                    <option value="adresse.ville">City</option>
+                    <option value="prime">Prime</option>
+                  
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="aggregateField mb-3">Aggregate By</label>
+                <select name="aggregateField" id="aggregateField" class="form-control" required>
+                    <option value="prime">Prime</option>
+                    <option value="anciennete">Tenure</option>
+                    <option value="total">Total Salary</option>
+                   
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Group</button>
+        </form>
+        
+
+        
+        <section class="my-5">
+            <h3>Delete User</h3>
+            <form action="/delete-employee" method="POST">
+                <div class="mb-3">
+                    <label for="employeeId" class="form-label">User Name to Delete</label>
+                    <input type="text" class="form-control" id="employeeId" name="employeeId" required>
+                </div>
+                <button type="submit" class="btn btn-danger">Delete User</button>
+            </form>
+        </section>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
